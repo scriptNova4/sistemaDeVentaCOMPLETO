@@ -12,7 +12,7 @@ class Config:
 class DevelopmentConfig(Config):
     """Development configuration"""
     DEBUG = True
-    SQLALCHEMY_DATABASE_URI = os.environ.get('DEV_DATABASE_URL', 'sqlite:///pos_dev.db')
+    SQLALCHEMY_DATABASE_URI = os.environ.get('DEV_DATABASE_URL', 'postgresql://postgres@localhost/pos_system')
 
 class TestingConfig(Config):
     """Testing configuration"""
@@ -22,8 +22,7 @@ class TestingConfig(Config):
 class ProductionConfig(Config):
     """Production configuration"""
     DEBUG = False
-    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL', 'sqlite:///pos_prod.db')
-    # En producción, es recomendable utilizar PostgreSQL o MySQL en lugar de SQLite
+    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL', 'postgresql://postgres@localhost/pos_system')
 
 config = {
     'development': DevelopmentConfig,

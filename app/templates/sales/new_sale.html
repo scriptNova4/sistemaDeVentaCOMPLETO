@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+
+{% block title %}Nueva Venta - Sistema POS{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2>Nueva Venta</h2>
+    <div class="row">
+        <div class="col-md-8">
+            <h4>Agregar Productos</h4>
+            <form method="POST">
+                <input type="hidden" name="action" value="add_item">
+                <div class="mb-3">
+                    <label for="product_id" class="form-label">Producto</label>
+                    <select class="form-control" id="product_id" name="product_id" required>
+                        {% for product in products %}
+                        <option value="{{ product.id }}">{{ product.name }} - ${{ product.price|number_format(2) }} (Stock: {{ product.stock }})</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="quantity" class="form-label">Cantidad</label>
+                    <input type="number" class="form-control" id="quantity" name="quantity" min="1" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Agregar al Carrito</button>
+            </form>
+        </div>
+        <div class="col-md-4">
+            <h4>Carrito</h4>
+            {% if cart %}
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Producto</th>
+                        <th>Cantidad</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in cart %}
+                    <tr>
+                        <td>{{ item.name }}</td>
+                        <td>{{ item.quantity }}</td>
+                        <td>${{ item.total|number_format(2) }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <form method="POST">
+                <input type="hidden" name="action" value="finalize_sale">
+                <div class="mb-3">
+                    <label for="customer_id" class="form-label">Cliente (Opcional)</label>
+                    <select class="form-control" id="customer_id" name="customer_id">
+                        <option value="">Cliente General</option>
+                        {% for customer in customers %}
+                        <option value="{{ customer.id }}">{{ customer.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="payment_method" class="form-label">Método de Pago</label>
+                    <select class="form-control" id="payment_method" name="payment_method">
+                        <option value="cash">Efectivo</option>
+                        <option value="card">Tarjeta</option>
+                        <option value="credit">Crédito</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-success">Finalizar Venta</button>
+            </form>
+            {% else %}
+            <p>El carrito está vacío.</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

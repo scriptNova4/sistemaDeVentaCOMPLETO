@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block title %}Órdenes de Compra - Sistema POS{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2>Órdenes de Compra</h2>
+    <a href="{{ url_for('suppliers_controller.new_purchase_order') }}" class="btn btn-primary mb-3">Nueva Orden</a>
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>Número de Orden</th>
+                <th>Proveedor</th>
+                <th>Total</th>
+                <th>Estado</th>
+                <th>Fecha</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for order in orders %}
+            <tr>
+                <td>{{ order.order_number }}</td>
+                <td>{{ order.supplier.name }}</td>
+                <td>${{ order.total|number_format(2) }}</td>
+                <td>{{ order.status }}</td>
+                <td>{{ order.created_at|date('d/m/Y H:i') }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block title %}Asistente de IA - Sistema POS{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2>Asistente de IA</h2>
+    <h4>Recomendaciones Recientes</h4>
+    <div class="list-group mb-4">
+        {% for rec in recommendations %}
+        <a href="{{ url_for('ai_controller.view_recommendation', rec_id=rec.id) }}" class="list-group-item list-group-item-action">
+            <div class="d-flex w-100 justify-content-between">
+                <h6 class="mb-1">{{ rec.title }}</h6>
+                <span class="badge {% if rec.status == 'pending' %}bg-warning{% elif rec.status == 'applied' %}bg-success{% else %}bg-secondary{% endif %}">
+                    {{ rec.status }}
+                </span>
+            </div>
+            <p class="mb-1 text-truncate">{{ rec.description }}</p>
+            <small>Confianza: {{ (rec.confidence * 100)|number_format(0) }}% | {{ rec.created_at|date('d/m/Y') }}</small>
+        </a>
+        {% endfor %}
+    </div>
+
+    <h4>Insights Recientes</h4>
+    <div class="list-group">
+        {% for insight in insights %}
+        <a href="{{ url_for('ai_controller.view_insight', insight_id=insight.id) }}" class="list-group-item list-group-item-action">
+            <div class="d-flex w-100 justify-content-between">
+                <h6 class="mb-1">{{ insight.title }}</h6>
+                <span class="badge {% if insight.is_important %}bg-danger{% else %}bg-info{% endif %}">
+                    {{ 'Importante' if insight.is_important else 'Normal' }}
+                </span>
+            </div>
+            <p class="mb-1 text-truncate">{{ insight.description }}</p>
+            <small>{{ insight.created_at|date('d/m/Y') }}</small>
+        </a>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

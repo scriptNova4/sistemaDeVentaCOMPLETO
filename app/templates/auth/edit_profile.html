@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block title %}Editar Perfil - Sistema POS{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2>Editar Perfil</h2>
+    <form method="POST">
+        <div class="mb-3">
+            <label for="email" class="form-label">Email</label>
+            <input type="email" class="form-control" id="email" name="email" value="{{ current_user.email }}" required>
+        </div>
+        <div class="mb-3">
+            <label for="fullname" class="form-label">Nombre Completo</label>
+            <input type="text" class="form-control" id="fullname" name="fullname" value="{{ current_user.fullname }}" required>
+        </div>
+        <div class="mb-3">
+            <label for="current_password" class="form-label">Contraseña Actual</label>
+            <input type="password" class="form-control" id="current_password" name="current_password">
+        </div>
+        <div class="mb-3">
+            <label for="new_password" class="form-label">Nueva Contraseña</label>
+            <input type="password" class="form-control" id="new_password" name="new_password">
+        </div>
+        <button type="submit" class="btn btn-primary">Actualizar Perfil</button>
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block title %}Nuevo Programa de Fidelización - Sistema POS{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2>Nuevo Programa de Fidelización</h2>
+    <form method="POST">
+        <div class="mb-3">
+            <label for="name" class="form-label">Nombre</label>
+            <input type="text" class="form-control" id="name" name="name" required>
+        </div>
+        <div class="mb-3">
+            <label for="description" class="form-label">Descripción</label>
+            <textarea class="form-control" id="description" name="description"></textarea>
+        </div>
+        <div class="mb-3">
+            <label for="points_per_purchase" class="form-label">Puntos por Compra</label>
+            <input type="number" step="0.01" class="form-control" id="points_per_purchase" name="points_per_purchase" value="1.0">
+        </div>
+        <div class="mb-3">
+            <label for="points_to_currency" class="form-label">Valor por Punto</label>
+            <input type="number" step="0.01" class="form-control" id="points_to_currency" name="points_to_currency" value="0.01">
+        </div>
+        <div class="mb-3">
+            <label for="min_points_to_redeem" class="form-label">Mínimo para Canjear</label>
+            <input type="number" class="form-control" id="min_points_to_redeem" name="min_points_to_redeem" value="100">
+        </div>
+        <button type="submit" class="btn btn-primary">Crear Programa</button>
+    </form>
+</div>
+{% endblock %}

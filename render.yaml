@@ -1,0 +1,19 @@
+services:
+  - type: web
+    name: pos-system
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn run:app
+    envVars:
+      - key: FLASK_APP
+        value: run.py
+      - key: FLASK_ENV
+        value: production
+      - key: SECRET_KEY
+        fromGroup: pos-secrets
+      - key: DATABASE_URL
+        fromGroup: pos-secrets
+    disk:
+      name: pos-data
+      mountPath: /opt/render/project/src/data
+      sizeGB: 1

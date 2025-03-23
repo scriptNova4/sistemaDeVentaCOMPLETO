@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block title %}Reporte Financiero - Sistema POS{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2>Reporte Financiero</h2>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Ventas Totales (Últimos 30 días)</h5>
+                    <p class="card-text">${{ total_sales|number_format(2) }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Reembolsos Totales (Últimos 30 días)</h5>
+                    <p class="card-text">${{ total_refunded|number_format(2) }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

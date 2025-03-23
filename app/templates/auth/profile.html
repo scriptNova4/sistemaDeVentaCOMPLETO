@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block title %}Mi Perfil - Sistema POS{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2>Mi Perfil</h2>
+    <p><strong>Usuario:</strong> {{ current_user.username }}</p>
+    <p><strong>Email:</strong> {{ current_user.email }}</p>
+    <p><strong>Nombre Completo:</strong> {{ current_user.fullname }}</p>
+    <p><strong>Rol:</strong> {{ current_user.role }}</p>
+    <p><strong>Último Inicio de Sesión:</strong> {{ current_user.last_login|date('d/m/Y H:i') }}</p>
+    <a href="{{ url_for('auth_controller.edit_profile') }}" class="btn btn-primary">Editar Perfil</a>
+</div>
+{% endblock %}

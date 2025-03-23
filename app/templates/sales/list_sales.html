@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block title %}Historial de Ventas - Sistema POS{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2>Historial de Ventas</h2>
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>Ticket</th>
+                <th>Cliente</th>
+                <th>Total</th>
+                <th>Fecha</th>
+                <th>Estado</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for sale in sales %}
+            <tr>
+                <td>{{ sale.ticket_number }}</td>
+                <td>{{ sale.customer.name if sale.customer else 'Cliente General' }}</td>
+                <td>${{ sale.total|number_format(2) }}</td>
+                <td>{{ sale.created_at|date('d/m/Y H:i') }}</td>
+                <td>{{ sale.payment_status }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

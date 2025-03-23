@@ -1,0 +1,240 @@
+{% extends 'base.html' %}
+
+{% block title %}Inicio - Sistema POS{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    <h2 class="card-title"><i class="fas fa-tachometer-alt"></i> Dashboard</h2>
+                    <p class="card-text">Bienvenido al Sistema de Punto de Venta. Aquí puedes ver un resumen de la actividad reciente.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tarjetas de Resumen -->
+    <div class="row mb-4">
+        <div class="col-md-3 mb-3">
+            <div class="card bg-primary text-white h-100">
+                <div class="card-body">
+                    <h5 class="card-title"><i class="fas fa-shopping-cart"></i> Ventas Hoy</h5>
+                    <h2 class="display-4">{{ sales_today_count }}</h2>
+                    <p>Total: ${{ sales_today_amount|number_format(2) }}</p>
+                </div>
+                <div class="card-footer d-flex">
+                    <a href="{{ url_for('sales_controller.list_sales') }}" class="text-white text-decoration-none">Ver detalles
+                        <span class="ms-2"><i class="fas fa-arrow-circle-right"></i></span>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-3">
+            <div class="card bg-success text-white h-100">
+                <div class="card-body">
+                    <h5 class="card-title"><i class="fas fa-box"></i> Productos</h5>
+                    <h2 class="display-4">{{ products_count }}</h2>
+                    <p>Stock bajo: {{ low_stock_count }}</p>
+                </div>
+                <div class="card-footer d-flex">
+                    <a href="{{ url_for('products_controller.list_products') }}" class="text-white text-decoration-none">Ver detalles
+                        <span class="ms-2"><i class="fas fa-arrow-circle-right"></i></span>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-3">
+            <div class="card bg-warning text-dark h-100">
+                <div class="card-body">
+                    <h5 class="card-title"><i class="fas fa-users"></i> Clientes</h5>
+                    <h2 class="display-4">{{ customers_count }}</h2>
+                    <p>Nuevos este mes: {{ new_customers }}</p>
+                </div>
+                <div class="card-footer d-flex">
+                    <a href="{{ url_for('customers_controller.list_customers') }}" class="text-dark text-decoration-none">Ver detalles
+                        <span class="ms-2"><i class="fas fa-arrow-circle-right"></i></span>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-3">
+            <div class="card bg-danger text-white h-100">
+                <div class="card-body">
+                    <h5 class="card-title"><i class="fas fa-robot"></i> Recomendaciones IA</h5>
+                    <h2 class="display-4">{{ ai_recommendations_count }}</h2>
+                    <p>Pendientes: {{ pending_recommendations }}</p>
+                </div>
+                <div class="card-footer d-flex">
+                    <a href="{{ url_for('ai_controller.dashboard') }}" class="text-white text-decoration-none">Ver detalles
+                        <span class="ms-2"><i class="fas fa-arrow-circle-right"></i></span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Gráficos y Tablas -->
+    <div class="row mb-4">
+        <!-- Gráfico de Ventas -->
+        <div class="col-lg-8 mb-4">
+            <div class="card h-100">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0"><i class="fas fa-chart-line"></i> Ventas Recientes</h5>
+                    <div class="dropdown">
+                        <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                            Periodo
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#">Hoy</a></li>
+                            <li><a class="dropdown-item" href="#">Última Semana</a></li>
+                            <li><a class="dropdown-item" href="#">Último Mes</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <canvas id="salesChart" height="250"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Productos Más Vendidos -->
+        <div class="col-lg-4 mb-4">
+            <div class="card h-100">
+                <div class="card-header">
+                    <h5 class="mb-0"><i class="fas fa-trophy"></i> Productos Más Vendidos</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-sm">
+                            <thead>
+                                <tr>
+                                    <th>Producto</th>
+                                    <th>Vendidos</th>
+                                    <th>Ingresos</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for product in top_products %}
+                                <tr>
+                                    <td>{{ product.name }}</td>
+                                    <td>{{ product.sold_count }}</td>
+                                    <td>${{ product.revenue|number_format(2) }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Últimas Ventas -->
+        <div class="col-lg-6 mb-4">
+            <div class="card h-100">
+                <div class="card-header">
+                    <h5 class="mb-0"><i class="fas fa-receipt"></i> Últimas Ventas</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-sm">
+                            <thead>
+                                <tr>
+                                    <th>Ticket</th>
+                                    <th>Cliente</th>
+                                    <th>Total</th>
+                                    <th>Fecha</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for sale in recent_sales %}
+                                <tr>
+                                    <td>{{ sale.ticket_number }}</td>
+                                    <td>{{ sale.customer_name or 'Cliente General' }}</td>
+                                    <td>${{ sale.total|number_format(2) }}</td>
+                                    <td>{{ sale.created_at|date('d/m/Y H:i') }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="card-footer text-end">
+                    <a href="{{ url_for('sales_controller.list_sales') }}" class="btn btn-sm btn-primary">Ver todas</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recomendaciones de IA -->
+        <div class="col-lg-6 mb-4">
+            <div class="card h-100">
+                <div class="card-header">
+                    <h5 class="mb-0"><i class="fas fa-lightbulb"></i> Recomendaciones de IA</h5>
+                </div>
+                <div class="card-body">
+                    {% if ai_recommendations %}
+                        <div class="list-group">
+                            {% for rec in ai_recommendations %}
+                            <a href="{{ url_for('ai_controller.view_recommendation', rec_id=rec.id) }}" class="list-group-item list-group-item-action">
+                                <div class="d-flex w-100 justify-content-between">
+                                    <h6 class="mb-1">{{ rec.title }}</h6>
+                                    <span class="badge {% if rec.status == 'pending' %}bg-warning{% elif rec.status == 'applied' %}bg-success{% else %}bg-secondary{% endif %}">
+                                        {{ rec.status }}
+                                    </span>
+                                </div>
+                                <p class="mb-1 text-truncate">{{ rec.description }}</p>
+                                <small>Confianza: {{ (rec.confidence * 100)|number_format(0) }}% | {{ rec.created_at|date('d/m/Y') }}</small>
+                            </a>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <p class="text-center py-3">No hay recomendaciones disponibles</p>
+                    {% endif %}
+                </div>
+                <div class="card-footer text-end">
+                    <a href="{{ url_for('ai_controller.dashboard') }}" class="btn btn-sm btn-primary">Ver todas</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Gráfico de ventas
+    const salesCtx = document.getElementById('salesChart').getContext('2d');
+
+    // Datos de ejemplo - en una aplicación real, estos vendrían del backend
+    const salesData = {
+        labels: {{ sales_chart_labels|tojson }},
+        datasets: [{
+            label: 'Ventas',
+            data: {{ sales_chart_data|tojson }},
+            backgroundColor: 'rgba(54, 162, 235, 0.2)',
+            borderColor: 'rgba(54, 162, 235, 1)',
+            borderWidth: 1
+        }]
+    };
+
+    const salesChart = new Chart(salesCtx, {
+        type: 'line',
+        data: salesData,
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+});
+</script>
+{% endblock %}

@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block title %}Insight de IA - Sistema POS{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2>Insight: {{ insight.title }}</h2>
+    <p><strong>Tipo:</strong> {{ insight.insight_type }}</p>
+    <p><strong>Descripción:</strong> {{ insight.description }}</p>
+    <p><strong>Importante:</strong> {{ 'Sí' if insight.is_important else 'No' }}</p>
+    <p><strong>Creado:</strong> {{ insight.created_at|date('d/m/Y H:i') }}</p>
+    {% if insight.data %}
+    <p><strong>Datos:</strong> {{ insight.data }}</p>
+    {% endif %}
+</div>
+{% endblock %}

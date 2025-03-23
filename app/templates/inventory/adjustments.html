@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block title %}Ajustes de Inventario - Sistema POS{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2>Ajustes de Inventario</h2>
+    <form method="POST">
+        <div class="mb-3">
+            <label for="product_id" class="form-label">Producto</label>
+            <select class="form-control" id="product_id" name="product_id" required>
+                {% for product in products %}
+                <option value="{{ product.id }}">{{ product.name }} (Stock: {{ product.stock }})</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="quantity" class="form-label">Cantidad</label>
+            <input type="number" class="form-control" id="quantity" name="quantity" required>
+        </div>
+        <div class="mb-3">
+            <label for="movement_type" class="form-label">Tipo de Movimiento</label>
+            <select class="form-control" id="movement_type" name="movement_type" required>
+                <option value="entrada">Entrada</option>
+                <option value="salida">Salida</option>
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="reference" class="form-label">Referencia</label>
+            <input type="text" class="form-control" id="reference" name="reference">
+        </div>
+        <div class="mb-3">
+            <label for="notes" class="form-label">Notas</label>
+            <textarea class="form-control" id="notes" name="notes"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Realizar Ajuste</button>
+    </form>
+</div>
+{% endblock %}

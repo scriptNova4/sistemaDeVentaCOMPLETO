@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block title %}Programa de Fidelización - Sistema POS{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2>Programas de Fidelización</h2>
+    <a href="{{ url_for('customers_controller.new_loyalty_program') }}" class="btn btn-primary mb-3">Nuevo Programa</a>
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Puntos por Compra</th>
+                <th>Valor por Punto</th>
+                <th>Mínimo para Canjear</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for program in programs %}
+            <tr>
+                <td>{{ program.id }}</td>
+                <td>{{ program.name }}</td>
+                <td>{{ program.points_per_purchase }}</td>
+                <td>{{ program.points_to_currency }}</td>
+                <td>{{ program.min_points_to_redeem }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block title %}Recomendación de IA - Sistema POS{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2>Recomendación: {{ recommendation.title }}</h2>
+    <p><strong>Tipo:</strong> {{ recommendation.recommendation_type }}</p>
+    <p><strong>Descripción:</strong> {{ recommendation.description }}</p>
+    <p><strong>Confianza:</strong> {{ (recommendation.confidence * 100)|number_format(0) }}%</p>
+    <p><strong>Estado:</strong> {{ recommendation.status }}</p>
+    <p><strong>Creado:</strong> {{ recommendation.created_at|date('d/m/Y H:i') }}</p>
+    {% if recommendation.applied_at %}
+    <p><strong>Aplicado:</strong> {{ recommendation.applied_at|date('d/m/Y H:i') }}</p>
+    {% endif %}
+
+    <h4>Acciones</h4>
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>Tipo</th>
+                <th>Entidad</th>
+                <th>Valor</th>
+                <th>Notas</th>
+                <th>Estado</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for action in recommendation.actions %}
+            <tr>
+                <td>{{ action.action_type }}</td>
+                <td>{{ action.entity_type }} (ID: {{ action.entity_id }})</td>
+                <td>{{ action.value }}</td>
+                <td>{{ action.notes }}</td>
+                <td>{{ action.status }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    {% if recommendation.status == 'pending' %}
+    <form action="{{ url_for('ai_controller.apply_recommendation', rec_id=recommendation.id) }}" method="POST" style="display:inline;">
+        <button type="submit" class="btn btn-success">Aplicar Recomendación</button>
+    </form>
+    <form action="{{ url_for('ai_controller.reject_recommendation', rec_id=recommendation.id) }}" method="POST" style="display:inline;">
+        <button type="submit" class="btn btn-danger">Rechazar Recomendación</button>
+    </form>
+    {% endif %}
+</div>
+{% endblock %}

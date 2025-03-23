@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block title %}Nuevo Proveedor - Sistema POS{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2>Nuevo Proveedor</h2>
+    <form method="POST">
+        <div class="mb-3">
+            <label for="name" class="form-label">Nombre</label>
+            <input type="text" class="form-control" id="name" name="name" required>
+        </div>
+        <div class="mb-3">
+            <label for="contact_name" class="form-label">Nombre de Contacto</label>
+            <input type="text" class="form-control" id="contact_name" name="contact_name">
+        </div>
+        <div class="mb-3">
+            <label for="email" class="form-label">Email</label>
+            <input type="email" class="form-control" id="email" name="email" required>
+        </div>
+        <div class="mb-3">
+            <label for="phone" class="form-label">Teléfono</label>
+            <input type="text" class="form-control" id="phone" name="phone">
+        </div>
+        <div class="mb-3">
+            <label for="address" class="form-label">Dirección</label>
+            <textarea class="form-control" id="address" name="address"></textarea>
+        </div>
+        <div class="mb-3">
+            <label for="payment_terms" class="form-label">Términos de Pago</label>
+            <input type="text" class="form-control" id="payment_terms" name="payment_terms">
+        </div>
+        <button type="submit" class="btn btn-primary">Crear Proveedor</button>
+    </form>
+</div>
+{% endblock %}

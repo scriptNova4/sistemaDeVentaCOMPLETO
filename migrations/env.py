@@ -8,8 +8,15 @@ from sqlalchemy import engine_from_config, pool
 # access to the values within the .ini file in use.
 config = context.config
 
+# --- INICIO DE LA CORRECCIÓN ---
+# Forzar el nombre/path correcto relativo al directorio raíz del proyecto
+# Asegura que se use 'alembic.ini' de la raíz.
+config.config_file_name = 'alembic.ini'
+# --- FIN DE LA CORRECCIÓN ---
+
 # Interpret the config file for Python logging.
 # This line sets up loggers basically.
+# Ahora usará 'alembic.ini' forzado en la línea anterior
 fileConfig(config.config_file_name)
 logger = logging.getLogger('alembic.env')
 
@@ -18,6 +25,12 @@ logger = logging.getLogger('alembic.env')
 # from myapp import mymodel
 # target_metadata = mymodel.Base.metadata
 target_metadata = None
+
+# other values from the config, defined by the needs of env.py,
+# can be acquired:
+# my_important_option = config.get_main_option("my_important_option")
+# ... etc.
+
 
 def run_migrations_offline():
     """Run migrations in 'offline' mode.
@@ -42,6 +55,7 @@ def run_migrations_offline():
     with context.begin_transaction():
         context.run_migrations()
 
+
 def run_migrations_online():
     """Run migrations in 'online' mode.
 
@@ -59,6 +73,7 @@ def run_migrations_online():
                 directives[:] = []
                 logger.info('No changes in schema detected.')
 
+    # Usa la configuración de alembic.ini para crear el engine
     connectable = engine_from_config(
         config.get_section(config.config_ini_section, {}),
         prefix="sqlalchemy.",
@@ -74,6 +89,7 @@ def run_migrations_online():
 
         with context.begin_transaction():
             context.run_migrations()
+
 
 if context.is_offline_mode():
     run_migrations_offline()
